@@ -29,7 +29,8 @@ Traveloop was built using a robust, highly scalable Full-Stack architecture:
 
 - **Frontend**: React (Vite), React Router DOM, TailwindCSS v4, Lucide React (Icons), Axios
 - **Backend**: Java 17, Spring Boot, Spring Data JPA, Hibernate, RESTful APIs
-- **Database**: H2 In-Memory Database (for seamless hackathon demonstration) / MySQL ready
+- **Database**: MySQL 8.0 (Persistent volume)
+- **DevOps**: Docker, Kubernetes, GitHub Actions (CI/CD), Prometheus, Grafana
 
 ### Architecture Diagram
 
@@ -57,12 +58,12 @@ graph TD
 
     %% Database Subsystem
     subgraph Database [Relational DB]
-        H2[(H2 In-Memory DB)]
+        MySQL[(MySQL 8.0 Container)]
     end
 
     %% Connections
     Axios -- "HTTP GET/POST/PUT/DELETE" --> Controllers
-    Repos -- "Hibernate/JPA Queries" --> H2
+    Repos -- "Hibernate/JPA Queries" --> MySQL
     
     classDef react fill:#61DAFB,stroke:#fff,stroke-width:2px,color:#000;
     classDef spring fill:#6DB33F,stroke:#fff,stroke-width:2px,color:#fff;
@@ -70,31 +71,52 @@ graph TD
     
     class UI,Router,Axios react;
     class Controllers,Services,Repos spring;
-    class H2 db;
+    class MySQL db;
 ```
 
 ---
 
-## 🚀 How to Run Locally
+## 🚀 How to Run Locally (Docker)
 
-Because Traveloop is configured with an **H2 In-Memory Database**, setup is completely frictionless. You do not need to install MySQL or configure any external services!
+Traveloop is fully containerized. The easiest way to run the entire stack (Frontend, Backend, Database, and Monitoring) is using Docker and the provided `Makefile`.
 
-### 1. Start the Backend API
-Open a terminal and navigate to the `backend` folder:
+### Prerequisites
+- Docker & Docker Compose
+- `make` (optional, but recommended)
+
+### 1. Set up Environment Variables
+Copy the example environment file:
 ```bash
-cd backend
-./mvnw spring-boot:run
+cp .env.example .env
 ```
-*The Spring Boot server will start on `http://localhost:8080`, and the database schema will be automatically generated.*
 
-### 2. Start the Frontend UI
-Open a separate terminal and navigate to the `frontend` folder:
+### 2. Start the Application
+Run the following command at the root of the project:
 ```bash
-cd frontend
-npm install
-npm run dev
+make up
+# Or if you don't have make: docker-compose up -d
 ```
-*The React app will launch on `http://localhost:5173`.*
+
+### 3. Access the Services
+Once running, you can access the different components at:
+- **Frontend UI**: `http://localhost:5173`
+- **Backend API**: `http://localhost:8080`
+- **Prometheus**: `http://localhost:9090`
+- **Grafana**: `http://localhost:3000` (Login: `admin` / `admin`)
+
+To stop the services, run `make down`. To view logs, run `make logs`.
+
+*(Note: You can still run the project manually using `./mvnw spring-boot:run` in the backend and `npm run dev` in the frontend if you have a local MySQL instance running).*
+
+---
+
+## 🛠️ DevOps & Infrastructure
+
+Traveloop is ready for enterprise-grade deployment:
+
+- **CI/CD Pipeline**: Configured with GitHub Actions (`.github/workflows/ci.yml`) to automatically lint the frontend, run backend tests, and build Docker images on every push.
+- **Kubernetes Manifests**: Located in the `k8s/` directory. Includes Deployments, Services, PVCs, and Secrets for the entire stack.
+- **Observability**: Fully integrated with Spring Boot Actuator, Prometheus, and Grafana for real-time application metrics.
 
 ---
 
@@ -102,16 +124,14 @@ npm run dev
 
 ```text
 Traveloop/
-├── backend/                  # Spring Boot API
-│   ├── src/main/java/.../controllers/  # REST endpoints (TripController, UserController)
-│   ├── src/main/java/.../services/     # Business logic
-│   ├── src/main/java/.../models/       # JPA Entities (Trip, Stop, Activity, ChecklistItem)
-│   └── src/main/resources/application.properties  # H2 DB config
-│
-└── frontend/                 # React UI
-    ├── src/pages/            # All 14 UI screens (Dashboard, Budget, Checklist, etc.)
-    ├── src/App.jsx           # React Router configuration
-    └── src/index.css         # Tailwind v4 imports
+├── backend/                  # Spring Boot API & Dockerfile
+├── frontend/                 # React UI & Dockerfile
+├── k8s/                      # Kubernetes Manifests
+├── prometheus/               # Observability configs
+├── .github/workflows/        # CI/CD Pipeline
+├── docker-compose.yml        # Local orchestration
+├── Makefile                  # Developer scripts
+└── README.md                 # You are here!
 ```
 
 ---
