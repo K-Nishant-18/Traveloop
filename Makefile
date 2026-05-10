@@ -10,27 +10,27 @@ help:
 	@echo "  make clean    - Stop services and remove persistent volumes"
 
 build:
-	docker-compose build
+	docker compose build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 restart: down up
 
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 db-logs:
-	docker-compose logs -f mysql-db
+	docker compose logs -f mysql-db
 
 backend-logs:
-	docker-compose logs -f backend
+	docker compose logs -f backend
 
 frontend-logs:
-	docker-compose logs -f frontend
+	docker compose logs -f frontend
 
 clean:
-	docker-compose down -v
+	docker compose down -v
