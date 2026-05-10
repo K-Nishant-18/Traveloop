@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2 # Scale up the backend for high availability
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        # Update this to point to your actual Docker registry (e.g., GHCR, Docker Hub, ECR)
+        image: ghcr.io/your-github-username/traveloop-backend:latest 
+        imagePullPolicy: Always
+        env:
+        - name: DB_HOST
+          value: "mysql-db" # Matches the metadata.name of the MySQL service
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          value: "traveloop"
+        - name: DB_USER
+          value: "root"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        ports:
+        - containerPort: 8080
+        # Optional: Add Readiness and Liveness probes
+        readinessProbe:
+          httpGet:
+            path: / # Update to an actual health check endpoint if you have one
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: ClusterIP # Keeps the backend internal to the cluster
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: backend
