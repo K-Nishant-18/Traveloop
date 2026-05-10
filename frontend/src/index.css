@@ -1,1 +1,68 @@
 @import "tailwindcss";
+
+@theme {
+  /* Override Indigo (Primary Brand Color: Olive Green #5B7E3C) */
+  --color-indigo-50: #F4F7F1;
+  --color-indigo-100: #E6EDE0;
+  --color-indigo-200: #CEDDC2;
+  --color-indigo-300: #ABCA93;
+  --color-indigo-400: #81AF5E;
+  --color-indigo-500: #5B7E3C;
+  --color-indigo-600: #486430;
+  --color-indigo-700: #394E25;
+  --color-indigo-800: #29391B;
+  --color-indigo-900: #1F2B14;
+  --color-indigo-950: #10170A;
+
+  /* Override Purple (Secondary Brand Color: Yellow #FFD65A) */
+  --color-purple-50: #FFFDF5;
+  --color-purple-100: #FFF9E1;
+  --color-purple-200: #FFF0C4;
+  --color-purple-300: #FFE497;
+  --color-purple-400: #FFDC6F;
+  --color-purple-500: #FFD65A;
+  --color-purple-600: #E6BD4D;
+  --color-purple-700: #B39237;
+  --color-purple-800: #806724;
+  --color-purple-900: #4D3D12;
+  --color-purple-950: #2A2007;
+
+  /* Override Orange (Accent Color: Orange #FF9D23) */
+  --color-orange-50: #FFFBF3;
+  --color-orange-100: #FFF4E0;
+  --color-orange-200: #FFE3C2;
+  --color-orange-300: #FFCE94;
+  --color-orange-400: #FFB65B;
+  --color-orange-500: #FF9D23;
+  --color-orange-600: #E68A1E;
+  --color-orange-700: #B36814;
+  --color-orange-800: #80480B;
+  --color-orange-900: #4E2A04;
+  --color-orange-950: #2B1501;
+
+  /* Override Amber (Accent Color: Orange #FF9D23) to match Orange */
+  --color-amber-50: #FFFBF3;
+  --color-amber-100: #FFF4E0;
+  --color-amber-200: #FFE3C2;
+  --color-amber-300: #FFCE94;
+  --color-amber-400: #FFB65B;
+  --color-amber-500: #FF9D23;
+  --color-amber-600: #E68A1E;
+  --color-amber-700: #B36814;
+  --color-amber-800: #80480B;
+  --color-amber-900: #4E2A04;
+  --color-amber-950: #2B1501;
+
+  /* Override Red (Danger/Alert Color: Red #EA5252) */
+  --color-red-50: #FFF4F4;
+  --color-red-100: #FFEAEA;
+  --color-red-200: #FFCDCD;
+  --color-red-300: #FFA3A3;
+  --color-red-400: #FF7171;
+  --color-red-500: #EA5252;
+  --color-red-600: #D34545;
+  --color-red-700: #A43131;
+  --color-red-800: #761E1E;
+  --color-red-900: #480F0F;
+  --color-red-950: #280505;
+}

@@ -16,6 +16,179 @@ import {
 import api from '../services/api';
 import AuthService from '../services/authService';
 
+// Curated Mock Itineraries Data for seamless frontend-only community detail views
+const mockItinerariesData = {
+  'mock-101': {
+    name: 'Backpacking Southeast Asia',
+    description: 'A grand journey through Thailand, Cambodia, and Vietnam. Exploring ancient temples, tropical islands, and delicious street food.',
+    startDate: '2026-06-01',
+    endDate: '2026-07-01',
+    coverImage: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80',
+    stops: [
+      {
+        cityName: 'Bangkok, Thailand',
+        startDate: '2026-06-01',
+        endDate: '2026-06-10',
+        budgetAllocated: 800,
+        orderIndex: 0,
+        activities: [
+          { title: 'Grand Palace Tour', type: 'SIGHTSEEING', cost: 15, startTime: '09:00:00' },
+          { title: 'Pad Thai Masterclass', type: 'FOOD', cost: 25, startTime: '13:00:00' },
+          { title: 'Chao Phraya River Cruise', type: 'SIGHTSEEING', cost: 30, startTime: '18:30:00' }
+        ]
+      },
+      {
+        cityName: 'Siem Reap, Cambodia',
+        startDate: '2026-06-11',
+        endDate: '2026-06-18',
+        budgetAllocated: 600,
+        orderIndex: 1,
+        activities: [
+          { title: 'Angkor Wat Sunrise', type: 'SIGHTSEEING', cost: 37, startTime: '05:00:00' },
+          { title: 'Phare Circus Performance', type: 'ENTERTAINMENT', cost: 18, startTime: '20:00:00' }
+        ]
+      },
+      {
+        cityName: 'Hanoi, Vietnam',
+        startDate: '2026-06-19',
+        endDate: '2026-06-25',
+        budgetAllocated: 500,
+        orderIndex: 2,
+        activities: [
+          { title: 'Old Quarter Food Tour', type: 'FOOD', cost: 20, startTime: '17:00:00' },
+          { title: 'Water Puppet Theater', type: 'ENTERTAINMENT', cost: 10, startTime: '15:30:00' }
+        ]
+      }
+    ]
+  },
+  'mock-102': {
+    name: 'Culinary Tour of Italy',
+    description: 'Indulging in regional specialties from Rome, Florence, and Venice. Wine tasting in Tuscany and pizza masterclass in Naples.',
+    startDate: '2026-09-10',
+    endDate: '2026-09-24',
+    coverImage: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80',
+    stops: [
+      {
+        cityName: 'Rome, Italy',
+        startDate: '2026-09-10',
+        endDate: '2026-09-15',
+        budgetAllocated: 1200,
+        orderIndex: 0,
+        activities: [
+          { title: 'Colosseum & Forum Guided Tour', type: 'SIGHTSEEING', cost: 45, startTime: '10:00:00' },
+          { title: 'Trastevere Evening Food Tour', type: 'FOOD', cost: 85, startTime: '18:00:00' }
+        ]
+      },
+      {
+        cityName: 'Florence, Italy',
+        startDate: '2026-09-16',
+        endDate: '2026-09-20',
+        budgetAllocated: 1000,
+        orderIndex: 1,
+        activities: [
+          { title: 'Uffizi Gallery Tour', type: 'SIGHTSEEING', cost: 35, startTime: '09:30:00' },
+          { title: 'Tuscan Wine & Olive Oil Tasting', type: 'FOOD', cost: 90, startTime: '14:00:00' }
+        ]
+      },
+      {
+        cityName: 'Venice, Italy',
+        startDate: '2026-09-21',
+        endDate: '2026-09-24',
+        budgetAllocated: 900,
+        orderIndex: 2,
+        activities: [
+          { title: 'Gondola Ride at Sunset', type: 'ENTERTAINMENT', cost: 80, startTime: '18:00:00' },
+          { title: 'St. Marks Basilica Visit', type: 'SIGHTSEEING', cost: 15, startTime: '11:00:00' }
+        ]
+      }
+    ]
+  },
+  'mock-103': {
+    name: 'Weekend Gateway in NYC',
+    description: 'A fast-paced exploration of Manhattan. Broadway shows, Central Park walks, and high-line adventures.',
+    startDate: '2026-05-15',
+    endDate: '2026-05-18',
+    coverImage: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=600&q=80',
+    stops: [
+      {
+        cityName: 'Manhattan, New York',
+        startDate: '2026-05-15',
+        endDate: '2026-05-18',
+        budgetAllocated: 1500,
+        orderIndex: 0,
+        activities: [
+          { title: 'Broadway Show: Wicked', type: 'ENTERTAINMENT', cost: 120, startTime: '19:00:00' },
+          { title: 'Summit One Vanderbilt Entry', type: 'SIGHTSEEING', cost: 45, startTime: '14:30:00' },
+          { title: 'High Line Park & Chelsea Market', type: 'SIGHTSEEING', cost: 15, startTime: '11:00:00' }
+        ]
+      }
+    ]
+  },
+  'mock-104': {
+    name: 'Swiss Alpine Hiking Expedition',
+    description: 'Conquering the most picturesque hiking trails in Interlaken, Zermatt, and Grindelwald with spectacular Matterhorn views.',
+    startDate: '2026-07-10',
+    endDate: '2026-07-20',
+    coverImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+    stops: [
+      {
+        cityName: 'Interlaken, Switzerland',
+        startDate: '2026-07-10',
+        endDate: '2026-07-14',
+        budgetAllocated: 1300,
+        orderIndex: 0,
+        activities: [
+          { title: 'Paragliding over Lake Thun', type: 'ENTERTAINMENT', cost: 160, startTime: '10:00:00' },
+          { title: 'Harder Kulm Sunset Funicular', type: 'SIGHTSEEING', cost: 35, startTime: '18:00:00' }
+        ]
+      },
+      {
+        cityName: 'Zermatt, Switzerland',
+        startDate: '2026-07-15',
+        endDate: '2026-07-20',
+        budgetAllocated: 1500,
+        orderIndex: 1,
+        activities: [
+          { title: 'Gornergrat Cog Railway Ride', type: 'SIGHTSEEING', cost: 95, startTime: '09:00:00' },
+          { title: 'Five Lakes Hiking Trail Guide', type: 'SIGHTSEEING', cost: 40, startTime: '08:30:00' }
+        ]
+      }
+    ]
+  },
+  'mock-105': {
+    name: 'Tokyo Future & Tradition',
+    description: 'A balanced trip exploring Akihabara tech culture, teamLab borderless digital art, alongside historical shrines in Kyoto.',
+    startDate: '2026-10-05',
+    endDate: '2026-10-15',
+    coverImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80',
+    stops: [
+      {
+        cityName: 'Tokyo, Japan',
+        startDate: '2026-10-05',
+        endDate: '2026-10-10',
+        budgetAllocated: 1400,
+        orderIndex: 0,
+        activities: [
+          { title: 'teamLab Planets Digital Exhibition', type: 'ENTERTAINMENT', cost: 28, startTime: '11:00:00' },
+          { title: 'Shibuya Sky & Harajuku Tour', type: 'SIGHTSEEING', cost: 18, startTime: '15:00:00' },
+          { title: 'Shinjuku Omoide Yokocho Izakaya', type: 'FOOD', cost: 40, startTime: '19:30:00' }
+        ]
+      },
+      {
+        cityName: 'Kyoto, Japan',
+        startDate: '2026-10-11',
+        endDate: '2026-10-15',
+        budgetAllocated: 1000,
+        orderIndex: 1,
+        activities: [
+          { title: 'Fushimi Inari Shrine Morning Walk', type: 'SIGHTSEEING', cost: 0, startTime: '07:30:00' },
+          { title: 'Traditional Tea Ceremony Experience', type: 'FOOD', cost: 35, startTime: '14:00:00' }
+        ]
+      }
+    ]
+  }
+};
+
 const PublicItinerary = () => {
   const { tripId } = useParams();
   const navigate = useNavigate();
@@ -34,6 +207,42 @@ const PublicItinerary = () => {
 
   useEffect(() => {
     if (tripId) {
+      if (tripId.startsWith('mock-')) {
+        const mockTrip = mockItinerariesData[tripId];
+        if (mockTrip) {
+          const formattedMock = {
+            id: tripId,
+            name: mockTrip.name,
+            description: mockTrip.description,
+            startDate: mockTrip.startDate,
+            endDate: mockTrip.endDate,
+            coverImage: mockTrip.coverImage,
+            isPublic: true,
+            stops: mockTrip.stops.map((stop, sidx) => ({
+              id: `mock-stop-${tripId}-${sidx}`,
+              cityName: stop.cityName,
+              startDate: stop.startDate,
+              endDate: stop.endDate,
+              budgetAllocated: stop.budgetAllocated,
+              orderIndex: stop.orderIndex,
+              activities: stop.activities.map((act, aidx) => ({
+                id: `mock-act-${tripId}-${sidx}-${aidx}`,
+                title: act.title,
+                type: act.type,
+                cost: act.cost,
+                startTime: act.startTime
+              }))
+            }))
+          };
+          setTrip(formattedMock);
+          setStops(formattedMock.stops);
+          setLoading(false);
+          // Set deterministic likes count based on ID
+          setLikes(Math.floor(Math.abs(tripId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100) + 45);
+          return;
+        }
+      }
+
       api.get(`/api/trips/${tripId}`)
         .then(res => {
           setTrip(res.data);
