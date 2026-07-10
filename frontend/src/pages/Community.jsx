@@ -424,12 +424,9 @@ const Community = () => {
 
   // Toggle Like button reactively
   const handleLikeTrip = (tripId) => {
-    let updatedLikes = [];
-    if (likedTrips.includes(tripId)) {
-      updatedLikes = likedTrips.filter(id => id !== tripId);
-    } else {
-      updatedLikes = [...likedTrips, tripId];
-    }
+    const updatedLikes = likedTrips.includes(tripId)
+      ? likedTrips.filter(id => id !== tripId)
+      : [...likedTrips, tripId];
     setLikedTrips(updatedLikes);
     localStorage.setItem('traveloop_liked_trips', JSON.stringify(updatedLikes));
   };
