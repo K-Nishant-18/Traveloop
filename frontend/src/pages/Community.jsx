@@ -265,6 +265,31 @@ const getTripImage = (trip) => {
   return fallbacks[Math.abs(numId) % fallbacks.length];
 };
 
+const defaultMockTrips = () => {
+  return Object.keys(mockItinerariesData).map(key => {
+    const mock = mockItinerariesData[key];
+    const days = Math.max(1, Math.ceil((new Date(mock.endDate) - new Date(mock.startDate)) / (1000 * 60 * 60 * 24)));
+    const likesSeed = Math.floor(Math.abs(key.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 100) + 45;
+    const commentsSeedCount = Math.floor(Math.abs(key.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 8) + 3;
+
+    return {
+      id: key,
+      name: mock.name,
+      description: mock.description,
+      startDate: mock.startDate,
+      endDate: mock.endDate,
+      isPublic: true,
+      author: mock.name.includes('Backpacking') ? 'Emma Wanderlust' : mock.name.includes('Culinary') ? 'Foodie Travels' : mock.name.includes('Swiss') ? 'Elena Peak' : mock.name.includes('NYC') ? 'Alex Explorer' : 'Tech Nomad',
+      email: 'mock@traveloop.com',
+      days: days,
+      stopsCount: mock.stops.length,
+      coverImage: mock.coverImage,
+      defaultLikes: likesSeed,
+      defaultCommentsCount: commentsSeedCount
+    };
+  });
+};
+
 const Community = () => {
   const navigate = useNavigate();
   const user = AuthService.getCurrentUser();
@@ -374,31 +399,6 @@ const Community = () => {
     const savedComments = JSON.parse(localStorage.getItem('traveloop_trip_comments') || '{}');
     setCommentsMap(savedComments);
   }, [user?.id]);
-
-  const defaultMockTrips = () => {
-    return Object.keys(mockItinerariesData).map(key => {
-      const mock = mockItinerariesData[key];
-      const days = Math.max(1, Math.ceil((new Date(mock.endDate) - new Date(mock.startDate)) / (1000 * 60 * 60 * 24)));
-      const likesSeed = Math.floor(Math.abs(key.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 100) + 45;
-      const commentsSeedCount = Math.floor(Math.abs(key.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 8) + 3;
-
-      return {
-        id: key,
-        name: mock.name,
-        description: mock.description,
-        startDate: mock.startDate,
-        endDate: mock.endDate,
-        isPublic: true,
-        author: mock.name.includes('Backpacking') ? 'Emma Wanderlust' : mock.name.includes('Culinary') ? 'Foodie Travels' : mock.name.includes('Swiss') ? 'Elena Peak' : mock.name.includes('NYC') ? 'Alex Explorer' : 'Tech Nomad',
-        email: 'mock@traveloop.com',
-        days: days,
-        stopsCount: mock.stops.length,
-        coverImage: mock.coverImage,
-        defaultLikes: likesSeed,
-        defaultCommentsCount: commentsSeedCount
-      };
-    });
-  };
 
   const handleLogout = () => {
     AuthService.logout();
